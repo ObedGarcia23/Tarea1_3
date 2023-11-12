@@ -12,11 +12,10 @@ namespace Tarea1_3.ViewModels
 {
     public partial class PersonaViewModel : ObservableObject, IQueryAttributable
     {
-
         private readonly PersonaDBContext _dbContext;
 
         [ObservableProperty]
-        private PersonaDTO personaDTO = new PersonaDTO();
+        private PersonaDTO personaDto = new PersonaDTO();
 
         [ObservableProperty]
         private string tituloPagina;
@@ -29,7 +28,7 @@ namespace Tarea1_3.ViewModels
         public PersonaViewModel(PersonaDBContext context)
         {
             _dbContext = context;
-            
+            //EmpleadoDto.FechaContrato = DateTime.Now;
         }
 
         public async void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -48,16 +47,14 @@ namespace Tarea1_3.ViewModels
                 await Task.Run(async () =>
                 {
                     var encontrado = await _dbContext.Personas.FirstAsync(e => e.Id == Id);
-                    PersonaDTO.Id = encontrado.Id;
-                    PersonaDTO.Nombres = encontrado.Nombres;
-                    PersonaDTO.Apellidos = encontrado.Apellidos;
-                    PersonaDTO.Edad = encontrado.Edad;
-                    PersonaDTO.Correo = encontrado.Correo;
-                    PersonaDTO.Direccion = encontrado.Direccion;
+                    PersonaDto.Id = encontrado.Id;
+                    PersonaDto.Nombres = encontrado.Nombres;
+                    PersonaDto.Apellidos = encontrado.Apellidos;
+                    PersonaDto.Correo = encontrado.Correo;
+                    PersonaDto.Direccion = encontrado.Direccion;
+                    //EmpleadoDto.FechaContrato = encontrado.FechaContrato;
 
                     MainThread.BeginInvokeOnMainThread(() => { LoadingEsVisible = false; });
-
-
                 });
             }
         }
@@ -67,55 +64,63 @@ namespace Tarea1_3.ViewModels
         {
             LoadingEsVisible = true;
             PersonaMensaje mensaje = new PersonaMensaje();
+
             await Task.Run(async () =>
             {
-                if (Id==0)
+                if (Id == 0)
                 {
                     var tbPersona = new Persona
                     {
-                        Nombres = PersonaDTO.Nombres,
-                        Apellidos = PersonaDTO.Apellidos,
-                        Edad = PersonaDTO.Edad,
-                        Correo = PersonaDTO.Correo,
-                        Direccion = PersonaDTO.Direccion,
-
+                        Nombres = PersonaDto.Nombres,
+                        Apellidos = PersonaDto.Apellidos,
+                        Edad = PersonaDto.Edad,
+                        Correo = PersonaDto.Correo,
+                        Direccion = PersonaDto.Direccion,
+                        
+                        //FechaContrato = EmpleadoDto.FechaContrato,
                     };
 
                     _dbContext.Personas.Add(tbPersona);
                     await _dbContext.SaveChangesAsync();
-                    PersonaDTO.Id = tbPersona.Id;
+
+                    PersonaDto.Id = tbPersona.Id;
                     mensaje = new PersonaMensaje()
                     {
                         EsCrear = true,
-                        PersonaDto = PersonaDTO
+                        PersonaDto = PersonaDto
                     };
+
                 }
                 else
                 {
-                    var encontrado = await _dbContext.Personas.FirstAsync(e => e.Id ==  Id);
-                    encontrado.Nombres = PersonaDTO.Nombres;
-                    encontrado.Apellidos = PersonaDTO.Apellidos;
-                    encontrado.Edad = PersonaDTO.Edad;
-                    encontrado.Correo = PersonaDTO.Correo;
-                    encontrado.Direccion = PersonaDTO.Direccion;
+                    var encontrado = await _dbContext.Personas.FirstAsync(e => e.Id == Id);
+                    encontrado.Nombres = PersonaDto.Nombres;
+                    encontrado.Apellidos = PersonaDto.Apellidos;
+                    encontrado.Apellidos = PersonaDto.Apellidos;
+                    encontrado.Apellidos = PersonaDto.Apellidos;
+                    //encontrado.FechaContrato = EmpleadoDto.FechaContrato;
 
                     await _dbContext.SaveChangesAsync();
 
                     mensaje = new PersonaMensaje()
                     {
                         EsCrear = false,
-                        PersonaDto = PersonaDTO
+                        PersonaDto = PersonaDto
                     };
 
                 }
+
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     LoadingEsVisible = false;
                     WeakReferenceMessenger.Default.Send(new PersonaMensajeria(mensaje));
-                    await Shell.Current.Navigation.PopAsync();  
+                    await Shell.Current.Navigation.PopAsync();
                 });
+
             });
         }
 
+
     }
 }
+

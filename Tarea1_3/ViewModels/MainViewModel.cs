@@ -16,27 +16,26 @@ namespace Tarea1_3.ViewModels
     {
         private readonly PersonaDBContext _dbContext;
         [ObservableProperty]
-        private ObservableCollection<PersonaDTO>listaPersona = new ObservableCollection<PersonaDTO>();
+        private ObservableCollection<PersonaDTO> listaPersona = new ObservableCollection<PersonaDTO>();
 
         public MainViewModel(PersonaDBContext context)
         {
             _dbContext = context;
+
             MainThread.BeginInvokeOnMainThread(new Action(async () => await Obtener()));
 
             WeakReferenceMessenger.Default.Register<PersonaMensajeria>(this, (r, m) =>
             {
                 PersonaMensajeRecibido(m.Value);
             });
-
         }
 
         public async Task Obtener()
         {
             var lista = await _dbContext.Personas.ToListAsync();
-
             if (lista.Any())
             {
-                foreach(var item in lista)
+                foreach (var item in lista)
                 {
                     ListaPersona.Add(new PersonaDTO
                     {
@@ -45,8 +44,8 @@ namespace Tarea1_3.ViewModels
                         Apellidos = item.Apellidos,
                         Edad = item.Edad,
                         Correo = item.Correo,
-                        Direccion = item.Direccion
-
+                        Direccion = item.Direccion,
+                        //FechaContrato = item.FechaContrato,
                     });
                 }
             }
@@ -70,12 +69,14 @@ namespace Tarea1_3.ViewModels
                 encontrado.Edad = personaDto.Edad;
                 encontrado.Correo = personaDto.Correo;
                 encontrado.Direccion = personaDto.Direccion;
+                //encontrado.FechaContrato = empleadoDto.FechaContrato;
 
             }
+
         }
 
         [RelayCommand]
-        private async Task Crear ()
+        private async Task Crear()
         {
             var uri = $"{nameof(PersonaPage)}?id=0";
             await Shell.Current.GoToAsync(uri);
@@ -91,18 +92,21 @@ namespace Tarea1_3.ViewModels
         [RelayCommand]
         private async Task Eliminar(PersonaDTO personaDto)
         {
-            bool answer = await Shell.Current.DisplayAlert("Mensaje", "Desea Eliminar el Empleado?", "SI", "NO");
+            bool answer = await Shell.Current.DisplayAlert("Mensaje", "Desea eliminar el registro?", "Si", "No");
 
             if (answer)
             {
                 var encontrado = await _dbContext.Personas
                     .FirstAsync(e => e.Id == personaDto.Id);
+
                 _dbContext.Personas.Remove(encontrado);
                 await _dbContext.SaveChangesAsync();
                 ListaPersona.Remove(personaDto);
 
             }
+
         }
+
 
     }
 }

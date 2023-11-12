@@ -9,19 +9,19 @@
                            Color="Blue"
                            HeightRequest="30"/>
         <Label Text=" Nombre" />
-        <Entry Text="{Binding personaDTO.Nombres}" Margin="0,0,0,10" />
+        <Entry Text="{Binding PersonaDto.Nombres}" Margin="0,0,0,10" />
         
         <Label Text=" Apellido" />
-        <Entry Text="{Binding personaDTO.Apellidos}"  Margin="0,0,0,10" />
+        <Entry Text="{Binding PersonaDto.Apellidos}"  Margin="0,0,0,10" />
         
         <Label Text=" Edad" />
-        <Entry Text="{Binding personaDTO.Edad}"  Margin="0,0,0,10" />
+        <Entry Text="{Binding PersonaDto.Edad}"  Margin="0,0,0,10" />
 
         <Label Text=" Correo" />
-        <Entry Text="{Binding personaDTO.Correo}"  Margin="0,0,0,10" />
+        <Entry Text="{Binding PersonaDto.Correo}"  Margin="0,0,0,10" />
 
         <Label Text=" Direccion" />
-        <Entry Text="{Binding personaDTO.Direccion}"  Margin="0,0,0,10" />
+        <Entry Text="{Binding PersonaDto.Direccion}"  Margin="0,0,0,10" />
  
         <Button Text="Guardar" Command="{Binding GuardarCommand}" Background="Green"/>
 
