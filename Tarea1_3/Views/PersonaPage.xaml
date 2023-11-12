@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Tarea1_3.Views.PersonaPage"
+             Title="{Binding TituloPagina}">
+    <VerticalStackLayout Padding="15">
+        <ActivityIndicator IsVisible="{Binding LoadingEsVisible}"
+                           IsRunning="{Binding LoadingEsVisible}"
+                           Color="Blue"
+                           HeightRequest="30"/>
+        <Label Text=" Nombre" />
+        <Entry Text="{Binding personaDTO.Nombres}" Margin="0,0,0,10" />
+        
+        <Label Text=" Apellido" />
+        <Entry Text="{Binding personaDTO.Apellidos}"  Margin="0,0,0,10" />
+        
+        <Label Text=" Edad" />
+        <Entry Text="{Binding personaDTO.Edad}"  Margin="0,0,0,10" />
+
+        <Label Text=" Correo" />
+        <Entry Text="{Binding personaDTO.Correo}"  Margin="0,0,0,10" />
+
+        <Label Text=" Direccion" />
+        <Entry Text="{Binding personaDTO.Direccion}"  Margin="0,0,0,10" />
+ 
+        <Button Text="Guardar" Command="{Binding GuardarCommand}" Background="Green"/>
+
+    </VerticalStackLayout>
+</ContentPage>

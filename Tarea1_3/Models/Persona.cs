@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Tarea1_3.Models
 {
-    public class Personas
+    public class Persona
     {
+
+        [Key]
         public int Id { get; set; }
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
@@ -15,6 +13,6 @@ namespace Tarea1_3.Models
         public string Correo { get; set; }
         public string Direccion { get; set; }
 
-        // Agrega más propiedades según tus necesidades
+
     }
 }
